@@ -60,7 +60,7 @@
         #echo {%h} { MUD List };
 
         #foreach {*mudlist[]} {mud} {
-            #echo {%-20s %s %s %s} $mud {$mudlist[$mud][host]} {$mudlist[$mud][port]} {$mudlist[$mud][character]} 
+            #echo {%-10s %-30s %-6s %s} $mud {$mudlist[$mud][host]} {$mudlist[$mud][port]} {$mudlist[$mud][character]} 
         }
     };
     #elseif {&mudlist[%1] != 0} {
