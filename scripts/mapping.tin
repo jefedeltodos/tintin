@@ -1,7 +1,7 @@
 #system mkdir -p ./muds/$mud/maps/;
 
 #map read ./muds/$mud/maps/$mud.map;
+#split 12 1;
 #map flag unicode on;
 #map flag vt on;
-#split 12 1;
 #map map;
