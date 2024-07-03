@@ -1,0 +1,2 @@
+#screen get cols screenCols;
+#screen get rows screenRows;
