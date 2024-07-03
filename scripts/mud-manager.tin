@@ -1,0 +1,81 @@
+#event {PROGRAM START} {
+    #show Type `addmud <name> <host> <port> [character] [password]` to add your mud to the mud list.;
+    #show Type `deletemud` to delete your mud from the mud list.;
+    #show Type `connect <mod>` to connect to the mud.;
+    
+    #class muddata read ./data/muddata.tin;
+
+    #nop &varname will display 0 if the variable does not exist.;
+    #if {&mudlist == 0} {
+        #class muddata open; 
+        #list mudlist clear;
+        #class muddata close
+    }
+}
+
+#alias {addmud} {
+    #if {"%3" == ""} {
+        #show Syntax: addmud <name> <host> <port> [character] [password]
+    };
+    #else {
+        #show Mud %1.;
+        #variable mudlist[%1][host] %2;
+        #variable mudlist[%1][port] %3;
+
+        #if {"%4" != ""} {
+            #variable mudlist[%1][character] %4
+        }
+
+        #if {"%5" != ""} {
+            #variable mudlist[%1][password] %5
+        }
+        
+        #if {mudlist[%1][character] != ""} {
+            #show The mud %1 (%2:%3) has and the character %4 (%5) been added.
+        };
+        #else {
+            #show The mud %1 (%2:%3) has been added.
+        }
+        
+        #show What the hell man!!!!!!!!!!!!!!!!!!!;
+        #class muddata write ./data/muddata.tin
+    }
+}
+
+#alias {deletemud} {
+    #if {&mudlist[%1]} {
+        #unvariable mudlist[%1];
+        #class muddata write ../data/muddata.tin
+    }
+}
+
+#alias {connect} {
+    #if {"%1" == ""} {
+        #echo {%h} {MUD List}
+
+        #foreach {*mudlist[]} {mud} {
+            #echo {%-20s %s:%s %s} $mudlist[$mud][host] $mudlist[$mud][port] $mud $mudlist[$mud][character] 
+        }
+    }
+    #elseif {&mudlist[%1] != 0} {
+        #variable mud {%1}
+        #session %1 $mudlist[%1][host] $mudlist[%1][port]
+
+    }
+    #else {
+        #show {Could not find the mud %1.}
+    }
+}
+
+#event {SESSION CONNECTED} {
+    #variable mud @gts{$mud}
+    #if {&mudlist[$mud]} {
+        #if {&mudlist[$mud][character]} {
+            #send {$mudlist[$mud][character]}
+            #if {&mudlist[$mud][password]} {
+                #send {$mudlist[$mud][password]}
+            }
+        }
+    }
+}
+

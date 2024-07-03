@@ -1,0 +1,3 @@
+#nop #info {events} {on}
+
+#read ./scripts/mud-manager.tin
