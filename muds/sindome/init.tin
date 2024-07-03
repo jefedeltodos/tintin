@@ -1,3 +1,4 @@
 #show Connecting to $mud with character $mudlist[$mud][character].;
 connect $mudlist[$mud][character] $mudlist[$mud][password]
 @wrap on
+#action {You can't go that way.} {#map undo}
