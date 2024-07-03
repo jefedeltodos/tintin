@@ -4,3 +4,4 @@
 #map flag unicode on;
 #map flag vt on;
 #map map;
+#show "Mapping file complete";

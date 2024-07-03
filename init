@@ -1,7 +1,7 @@
-git pull
+# git pull
 
 tt++ ./init.tin
 
-git add .
-git commit -m "Post run update"
-git push
+# git add .
+# git commit -m "Post run update"
+# git push

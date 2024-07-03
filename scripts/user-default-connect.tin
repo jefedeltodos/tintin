@@ -1,0 +1,8 @@
+#if {&mudlist[$mud]} {
+    #if {&mudlist[$mud][character] && &mudlist[$mud][skip] == 0} {
+        #send {$mudlist[$mud][character]};
+        #if {&mudlist[$mud][password]} {
+            #send {$mudlist[$mud][password]};
+        }
+    }
+};

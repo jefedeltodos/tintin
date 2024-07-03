@@ -3,6 +3,9 @@
 #read ./scripts/mud-manager.tin
 
 #event {SESSION CONNECTED} {
+    #show Start: Session connected in init.tin;
+    #read ./scripts/user-default-connect.tin;
     #read ./muds/$mud/init.tin; #nop Initialize the specific MUD;
-    #read ./scripts/mapping.tin
+    #read ./scripts/mapping.tin;
+    #show Complete: Session connected in init.int;
 }

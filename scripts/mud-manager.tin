@@ -73,15 +73,3 @@
     }
 }
 
-#event {SESSION CONNECTED} {
-    #show Connected to $mud.;
-    #if {&mudlist[$mud]} {
-        #if {&mudlist[$mud][character] && !&mudlist[$mud][skip]} {
-            #send {$mudlist[$mud][character]};
-            #if {&mudlist[$mud][password]} {
-                #send {$mudlist[$mud][password]};
-            }
-        }
-    };
-}
-
