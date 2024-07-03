@@ -1,12 +1,13 @@
 #event {PROGRAM START} {
-    #show Type `addmud <name> <host> <port> [character] [password]` to add your mud to the mud list.;
+    #show Type `addmud <name> <host> <port> [character] [password] [skip login]` to add your mud to the mud list.;
     #show Type `deletemud` to delete your mud from the mud list.;
-    #show Type `connect <mod>` to connect to the mud.;
+    #show Type `mud <mod>` to connect to the mud.;
     
+    #system mkdir -p ./data;
     #class muddata read ./data/muddata.tin;
 
     #nop &varname will display 0 if the variable does not exist.;
-    #if {&mudlist == 0} {
+    #if {&{mudlist} == 0} {
         #class muddata open; 
         #list mudlist clear;
         #class muddata close
@@ -15,29 +16,34 @@
 
 #alias {addmud} {
     #if {"%3" == ""} {
-        #show Syntax: addmud <name> <host> <port> [character] [password]
+        #show Syntax: addmud <name> <host> <port> [character] [password] [skip login]
     };
     #else {
-        #show Mud %1.;
         #variable mudlist[%1][host] %2;
         #variable mudlist[%1][port] %3;
+        #unvariable mudlist[%1][character];
+        #unvariable mudlist[%1][password];
+        #unvariable mudlist[%1][skip];
 
         #if {"%4" != ""} {
             #variable mudlist[%1][character] %4
-        }
+        };
 
         #if {"%5" != ""} {
             #variable mudlist[%1][password] %5
-        }
+        };
         
-        #if {mudlist[%1][character] != ""} {
+        #if {"%6" != ""} {
+            #variable mudlist[%1][skip] %6
+        };
+        
+        #if {&mudlist[%1][character] != 0} {
             #show The mud %1 (%2:%3) has and the character %4 (%5) been added.
         };
         #else {
             #show The mud %1 (%2:%3) has been added.
-        }
+        };
         
-        #show What the hell man!!!!!!!!!!!!!!!!!!!;
         #class muddata write ./data/muddata.tin
     }
 }
@@ -45,37 +51,39 @@
 #alias {deletemud} {
     #if {&mudlist[%1]} {
         #unvariable mudlist[%1];
-        #class muddata write ../data/muddata.tin
+        #class muddata write ./data/muddata.tin
     }
 }
 
-#alias {connect} {
+#alias {mud} {
     #if {"%1" == ""} {
-        #echo {%h} {MUD List}
+        #echo {%h} { MUD List };
 
         #foreach {*mudlist[]} {mud} {
-            #echo {%-20s %s:%s %s} $mudlist[$mud][host] $mudlist[$mud][port] $mud $mudlist[$mud][character] 
+            #echo {%-20s %s %s %s} $mud {$mudlist[$mud][host]} {$mudlist[$mud][port]} {$mudlist[$mud][character]} 
         }
-    }
+    };
     #elseif {&mudlist[%1] != 0} {
-        #variable mud {%1}
+        #variable mud {%1};
         #session %1 $mudlist[%1][host] $mudlist[%1][port]
 
-    }
+    };
     #else {
         #show {Could not find the mud %1.}
     }
 }
 
 #event {SESSION CONNECTED} {
-    #variable mud @gts{$mud}
+    #show Connected to $mud.;
     #if {&mudlist[$mud]} {
-        #if {&mudlist[$mud][character]} {
-            #send {$mudlist[$mud][character]}
+        #if {&mudlist[$mud][character] && !&mudlist[$mud][skip]} {
+            #send {$mudlist[$mud][character]};
             #if {&mudlist[$mud][password]} {
-                #send {$mudlist[$mud][password]}
+                #send {$mudlist[$mud][password]};
             }
         }
-    }
+    };
+
+    #read ./muds/$mud/init.tin;
 }
 

@@ -1,3 +1,7 @@
 #nop #info {events} {on}
 
 #read ./scripts/mud-manager.tin
+
+#event {SESSION CONNECTED} {
+    #read ./scripts/mapping.tin
+}

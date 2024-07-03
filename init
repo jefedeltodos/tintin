@@ -1,2 +1,6 @@
 
 tt++ ./init.tin
+
+git add .
+git commit -m "Updated Repo"
+git push
