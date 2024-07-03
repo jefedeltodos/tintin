@@ -3,5 +3,6 @@
 #read ./scripts/mud-manager.tin
 
 #event {SESSION CONNECTED} {
+    #read ./muds/$mud/init.tin; #nop Initialize the specific MUD;
     #read ./scripts/mapping.tin
 }

@@ -83,7 +83,5 @@
             }
         }
     };
-
-    #read ./muds/$mud/init.tin;
 }
 
