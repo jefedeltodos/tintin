@@ -1,6 +1,7 @@
+git pull
 
 tt++ ./init.tin
 
 git add .
-git commit -m "Updated Repo"
+git commit -m "Post run update"
 git push
